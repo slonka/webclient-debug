@@ -8,41 +8,63 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
 
 public class CallSpy implements ClassFileTransformer {
-  public byte[] transform(ClassLoader loader, String className, Class redefiningClass, ProtectionDomain domain, byte[] bytes) throws IllegalClassFormatException {
-    return transformClass(redefiningClass,bytes);
-  }
+  @Override
+  public byte[] transform(//region other parameters
+                          ClassLoader loader,
+                          String className,
+                          Class<?> classBeingRedefined,
+                          ProtectionDomain protectionDomain,
+                          //endregion
+                          byte[] classfileBuffer) throws IllegalClassFormatException {
 
-  private byte[] transformClass(Class classToTransform, byte[] b) {
-    ClassPool pool = ClassPool.getDefault();
-    CtClass cl = null;
-    try {
-      cl = pool.makeClass(new java.io.ByteArrayInputStream(b));
-      CtBehavior[] methods = cl.getDeclaredBehaviors();
-      for (int i = 0; i < methods.length; i++) {
-        if (methods[i].isEmpty() == false) {
-          changeMethod(methods[i]);
-        }
-      }
-      b = cl.toBytecode();
+    ClassPool cp = ClassPool.getDefault();
+
+    cp.importPackage("com.zeroturnaround.callspy");
+
+    //region filter agent classes
+    // we do not want to profile ourselves
+    if (className.startsWith("com/zeroturnaround/callspy") && !className.startsWith("com/zeroturnaround/callspy/Main")) {
+      return null;
     }
-    catch (Exception e) {
+    //endregion
+
+
+    //region filter out non-application classes
+    // Application filter. Can be externalized into a property file.
+    // For instance, profilers use blacklist/whitelist to configure this kind of filters
+    if (!className.startsWith("org/springframework/") && !className.startsWith("com/zeroturnaround/callspy/Main")) {
+      return classfileBuffer;
+    }
+    //endregion
+
+    // Print out all instrumented classes loaded
+//    System.out.println("class name: " + className);
+
+    try {
+      CtClass ct = cp.makeClass(new ByteArrayInputStream(classfileBuffer));
+
+      CtMethod[] declaredMethods = ct.getDeclaredMethods();
+      for (CtMethod method : declaredMethods) {
+        //region instrument method
+
+        if (isInstrumentable(method)) {
+          System.out.println("Instrumenting: " + method.getName());
+          method.insertBefore("System.out.println(\"started method " + method.getName() + "\");");
+        }
+        //endregion
+      }
+
+      return ct.toBytecode();
+    } catch (Throwable e) {
       e.printStackTrace();
     }
-    finally {
-      if (cl != null) {
-        cl.detach();
-      }
-    }
-    return b;
+
+    return classfileBuffer;
   }
 
-  private void changeMethod(CtBehavior method) throws NotFoundException, CannotCompileException {
-    // !Modifier.isAbstract(method.getModifiers()) -- abstract methods can't be modified. If you get exceptions, then add this to the if statement.
-    // native methods can't be modified.
-
-    if (!Modifier.isNative(method.getModifiers()) && !Modifier.isAbstract(method.getModifiers())) {
-      String insertString = "System.out.println(\"started method " + method.getName() + "\");";
-      method.insertBefore(insertString);
-    }
+  private boolean isInstrumentable(CtMethod method) {
+    return !Modifier.isNative(method.getModifiers())
+            && !Modifier.isAbstract(method.getModifiers())
+            && !Modifier.isInterface(method.getModifiers());
   }
 }
