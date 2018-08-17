@@ -41,34 +41,35 @@ public class Main {
 
         s1 = easy_to_find_method_name_123(webClient);
 
-//    s2 = easy_to_find_method_name_123(webClient);
+        s2 = easy_to_find_method_name_123(webClient);
 
         System.out.println("s1+s2" + s1 + s2);
         System.exit(0);
     }
 
     public String easy_to_find_method_name_123(WebClient webClient) {
+        System.out.println("> easy_to_find_method_name_123");
         long before = System.nanoTime();
         WebClient.RequestHeadersUriSpec<?> get = webClient.get();
         long after = System.nanoTime();
-        System.out.println(String.format("webClinet.get(): %d ms", (after - before) / 1_000_000));
+//        System.out.println(String.format("webClinet.get(): %d ms", (after - before) / 1_000_000));
 
         before = System.nanoTime();
         WebClient.ResponseSpec retrieve = get.retrieve();
         after = System.nanoTime();
-        System.out.println(String.format("retrieve(): %d ms", (after - before) / 1_000_000));
+//        System.out.println(String.format("retrieve(): %d ms", (after - before) / 1_000_000));
 
         before = System.nanoTime();
         Mono<String> stringMono = retrieve.bodyToMono(String.class);
         after = System.nanoTime();
-        System.out.println(String.format("bodyToMono(): %d ms", (after - before) / 1_000_000));
+//        System.out.println(String.format("bodyToMono(): %d ms", (after - before) / 1_000_000));
 
 //        before = System.nanoTime();
 //        CompletableFuture<String> stringCompletableFuture = stringMono.toFuture();
 //        after = System.nanoTime();
 //        System.out.println(String.format("toFuture(): %d ms", (after - before) / 1_000_000));
 
-        before = System.nanoTime();
+//        before = System.nanoTime();
 //        String s = stringCompletableFuture.get();
         String s = stringMono.block();
         after = System.nanoTime();

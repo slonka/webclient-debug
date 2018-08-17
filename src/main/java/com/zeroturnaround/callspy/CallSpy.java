@@ -48,8 +48,9 @@ public class CallSpy implements ClassFileTransformer {
         //region instrument method
 
         if (isInstrumentable(method)) {
-          System.out.println("Instrumenting: " + method.getName());
-          method.insertBefore("System.out.println(\"started method " + method.getName() + "\");");
+//          System.out.println("Instrumenting: " + method.getName());
+          method.insertBefore("System.out.println(\"> " + method.getLongName() + "\");");
+//          method.insertAfter("System.out.println(\"ended   method " + method.getName() + "\");");
         }
         //endregion
       }

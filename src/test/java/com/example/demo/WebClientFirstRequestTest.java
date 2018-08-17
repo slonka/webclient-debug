@@ -42,20 +42,20 @@ public class WebClientFirstRequestTest {
 
         boolean a = true;
         String s1 = "", s2 = "";
-        WebClient webClient = WebClient.create(MY_URL);
+        WebClient webClient = WebClient.builder().build();
 
-        s1 = getString(webClient);
+        s1 = getString(webClient, "http://google.com");
 
-        s2 = getString(webClient);
+        s2 = getString(webClient, MY_URL);
 
         System.out.println(s1 + s2);
 
         wireMock.verifyThat(getRequestedFor(urlEqualTo(FOOS_URL)));
     }
 
-    private String getString(WebClient webClient) throws InterruptedException, java.util.concurrent.ExecutionException {
+    private String getString(WebClient webClient, String uri) throws InterruptedException, java.util.concurrent.ExecutionException {
         long before = System.nanoTime();
-        WebClient.RequestHeadersUriSpec<?> get = webClient.get();
+        WebClient.RequestHeadersSpec<?> get = webClient.get().uri(uri);
         long after = System.nanoTime();
         System.out.println(String.format("webClinet.get(): %d ms", (after - before) / 1_000_000));
 
