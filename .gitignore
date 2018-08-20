@@ -1,4 +1,8 @@
 all_methods_called.txt
+
+first_call_*.txt
+second_call_*.txt
+
 error.txt
 errors.uniq.txt
 

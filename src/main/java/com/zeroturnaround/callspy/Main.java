@@ -48,7 +48,7 @@ public class Main {
     }
 
     public String easy_to_find_method_name_123(WebClient webClient) {
-        System.out.println("> easy_to_find_method_name_123");
+        System.out.println("<easy_to_find_method_name_123>");
         long before = System.nanoTime();
         WebClient.RequestHeadersUriSpec<?> get = webClient.get();
         long after = System.nanoTime();
@@ -73,6 +73,7 @@ public class Main {
 //        String s = stringCompletableFuture.get();
         String s = stringMono.block();
         after = System.nanoTime();
+        System.out.println("</easy_to_find_method_name_123>");
         System.out.println(String.format("block(): %d ms", (after - before) / 1_000_000));
         System.out.println("--");
         return s;
