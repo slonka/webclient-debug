@@ -45,7 +45,7 @@ In order to measure call time I wrote a java agent. It instruments all the metho
 See [CallSpy](https://github.com/slonka/webclient-debug/blob/master/src/main/java/com/example/demo/CallSpy.java) and [Timer](https://github.com/slonka/webclient-debug/blob/master/src/main/java/com/example/demo/Timer.java).
 
 That produces an output in which `>` means entering a function. `<` means returning from function.
-A bigger indent means that the function is higher on the stack.
+A bigger indentation means that the function is higher on the stack.
 That is followed by function name and time it took to run it.
 You can see [first_call.txt](https://github.com/slonka/webclient-debug/blob/master/first_call.txt), [second_call.txt](https://github.com/slonka/webclient-debug/blob/master/second_call.txt) and [diff.html](https://htmlpreview.github.io/?https://github.com/slonka/webclient-debug/blob/master/diff.html) (this is just a convenience file - you can do your diff manually) to see the differences between first and second `WebClient` call.
 
