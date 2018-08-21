@@ -6,7 +6,7 @@ When we started using webclient in our library and we've noticed that the CI bui
 We narrowed it down to first WebClient request and started digging what's happening.
 
 ### Running
-If you run `restTemplateRequest()` test in `WebClientFirstRequestTest` you will see the output:
+If you run [restTemplateRequest()](https://github.com/slonka/webclient-debug/blob/master/src/test/java/com/example/demo/WebClientFirstRequestTest.java#L70) test in `WebClientFirstRequestTest` you will see the output:
 
 ```
 First took: 46 ms
@@ -17,10 +17,10 @@ Difference in time: 40 ms
 Which means that the first request to a `WireMock` server took `46 ms` and the second request took `5 ms`.
 This test uses `RestTemplate` to perform the request.
 
-If you run `webclientRequest()` the first request takes `316 ms` and the second `6 ms`.
+If you run [webclientRequest()](https://github.com/slonka/webclient-debug/blob/master/src/test/java/com/example/demo/WebClientFirstRequestTest.java#L20) the first request takes `316 ms` and the second `6 ms`.
 
 Creating a new `WebClient` instance doesn't mean that the first request in the new instance will be slow.
-Running `webclientRequestFromDifferentInstances` outputs:
+Running [webclientRequestFromDifferentInstances](https://github.com/slonka/webclient-debug/blob/master/src/test/java/com/example/demo/WebClientFirstRequestTest.java#L35) outputs:
 
 ```
 block(): 319 ms
@@ -35,13 +35,13 @@ I wanted to profile this code to see which functions take the most time, it's on
 run in a loop and profiled with something like [async-profiler](https://github.com/jvm-profiling-tools/async-profiler).
 
 In order to measure call time I wrote a java agent. It instruments all the methods and inserts timing information.
-See `CallSpy` and `Timer`.
+See [CallSpy](https://github.com/slonka/webclient-debug/blob/master/src/main/java/com/example/demo/CallSpy.java) and [Timer](https://github.com/slonka/webclient-debug/blob/master/src/main/java/com/example/demo/Timer.java).
 
 That produces an output in which `>` means entering a function. `<` means returning from function.
 That is followed by function name and time it took to run it.
-You can see `first_call.txt` and `second_call.txt` and [diff.html](https://htmlpreview.github.io/?https://github.com/slonka/webclient-debug/blob/master/diff.html) (this is just a convenience file - you can do your diff manually) to see the differences between first and second `WebClient` call.
+You can see [first_call.txt](https://github.com/slonka/webclient-debug/blob/master/first_call.txt), [second_call.txt](https://github.com/slonka/webclient-debug/blob/master/second_call.txt) and [diff.html](https://htmlpreview.github.io/?https://github.com/slonka/webclient-debug/blob/master/diff.html) (this is just a convenience file - you can do your diff manually) to see the differences between first and second `WebClient` call.
 
-You can find sorted results in a file `function timing - averages (100 samples).tsv`.
+You can find sorted results in a file [function timing - averages (100 samples).tsv](https://github.com/slonka/webclient-debug/blob/master/function%20timing%20-%20averages%20(100%20samples).tsv).
 
 Bear in mind that the time of a function lower on the stack is a sum of all the functions above it.
 For example:
