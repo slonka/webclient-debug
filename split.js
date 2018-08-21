@@ -12,8 +12,8 @@ async function splitFile() {
     const contents = (await readFile(path.join('.', file))).toString();
 
     const splits = contents.split(/\<\/easy_to_find_method_name_123\>|\<easy_to_find_method_name_123\>/);
-    await writeFile(path.join('.', `first_call_${i}.txt`), splits[1]);
-    await writeFile(path.join('.', `second_call_${i}.txt`), splits[3]);
+    await writeFile(path.join('.', 'output', `first_call_${i}.txt`), splits[1]);
+    await writeFile(path.join('.', 'output', `second_call_${i}.txt`), splits[3]);
 }
 
 splitFile();

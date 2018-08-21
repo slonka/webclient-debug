@@ -3,6 +3,7 @@ buildscript {
         springBootVersion = '2.0.4.RELEASE'
     }
     repositories {
+        mavenLocal()
         mavenCentral()
         maven { url "https://repo.spring.io/snapshot" }
         maven { url "https://repo.spring.io/milestone" }
@@ -49,9 +50,9 @@ jar {
 
     manifest {
         attributes(
-                'Main-Class': 'com.zeroturnaround.callspy.Main',
-                'Premain-Class': 'com.zeroturnaround.callspy.Agent',
-                'Agent-Class': 'com.zeroturnaround.callspy.Agent',
+                'Main-Class': 'com.example.demo.Main',
+                'Premain-Class': 'com.example.demo.Agent',
+                'Agent-Class': 'com.example.demo.Agent',
                 'Can-Redefine-Classes': 'true',
                 'Can-Retransform-Classes': 'true',
                 'Can-Set-Native-Method-Prefix': 'true',

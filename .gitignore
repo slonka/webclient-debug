@@ -1,7 +1,12 @@
+node_modules
+
 all_methods_called.txt
 
 first_call_*.txt
 second_call_*.txt
+
+stats_first_call.txt
+stats_second_call.txt
 
 error.txt
 errors.uniq.txt
@@ -90,7 +95,7 @@ local.properties
 # PDT-specific
 .buildpath
 
-# sbteclipse plugin 
+# sbteclipse plugin
 .target
 
 # TeXlipse plugin

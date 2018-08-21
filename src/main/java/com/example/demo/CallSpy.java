@@ -1,4 +1,4 @@
-package com.zeroturnaround.callspy;
+package com.example.demo;
 
 import javassist.*;
 
@@ -6,17 +6,8 @@ import java.io.ByteArrayInputStream;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.IllegalClassFormatException;
 import java.security.ProtectionDomain;
-import java.util.Arrays;
-import java.util.List;
 
 public class CallSpy implements ClassFileTransformer {
-    public static final List<String> interestingMethods = Arrays.asList(new String[]{
-            "org.springframework.http.HttpMethod.values()",
-            "org.springframework.util.CollectionUtils.unmodifiableMultiValueMap(org.springframework.util.MultiValueMap)",
-            "org.springframework.web.reactive.function.client.ClientRequest.create(org.springframework.http.HttpMethod,java.net.URI)",
-            "org.springframework.web.reactive.function.client.DefaultClientResponse.bodyToMono(java.lang.Class)",
-            "org.springframework.core.ResolvableType.forClassWithGenerics(java.lang.Class,java.lang.Class[])"
-    });
 
     @Override
     public byte[] transform(//region other parameters
@@ -30,11 +21,11 @@ public class CallSpy implements ClassFileTransformer {
         ClassPool cp = ClassPool.getDefault();
         cp.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
 
-        cp.importPackage("com.zeroturnaround.callspy");
+        cp.importPackage("com.example.demo");
 
         //region filter agent classes
         // we do not want to profile ourselves
-        if (className.startsWith("com/zeroturnaround/callspy") && !className.startsWith("com/zeroturnaround/callspy/Main")) {
+        if (className.startsWith("com/example/demo") && !className.startsWith("com/example/demo/Main")) {
             return null;
         }
         //endregion
@@ -43,21 +34,16 @@ public class CallSpy implements ClassFileTransformer {
         //region filter out non-application classes
         // Application filter. Can be externalized into a property file.
         // For instance, profilers use blacklist/whitelist to configure this kind of filters
-        if (!className.startsWith("org/springframework/") && !className.startsWith("com/zeroturnaround/callspy/Main")) {
+        if (!className.startsWith("org/springframework/") && !className.startsWith("com/example/demo/Main")) {
             return classfileBuffer;
         }
         //endregion
-
-        // Print out all instrumented classes loaded
-//    System.out.println("class name: " + className);
 
         try {
             CtClass ct = cp.makeClass(new ByteArrayInputStream(classfileBuffer));
 
             CtMethod[] declaredMethods = ct.getDeclaredMethods();
             for (CtMethod method : declaredMethods) {
-                //region instrument method
-
                 if (isInstrumentable(method)) {
                     method.insertBefore(" { " +
                             "Timer.start();" +
@@ -68,13 +54,7 @@ public class CallSpy implements ClassFileTransformer {
                             "System.out.print(\"" + method.getLongName() + "\");" +
                             "Timer.log();" +
                             "}", true);
-
-//                    if (interestingMethods.contains(method.getLongName())) {
-//                        method.insertBefore("System.out.println(\"> " + method.getLongName() + " s: \" + System.nanoTime() / 1000000 " + ");");
-//                        method.insertAfter("System.out.println(\"< " + method.getLongName() + " e: \" + System.nanoTime() / 1000000 " + ");");
-//                    }
                 }
-                //endregion
             }
 
             return ct.toBytecode();
