@@ -17,7 +17,7 @@ public class WebClientFirstRequestTest {
     }
 
     @Test
-    public void simpleRequestWithoutPreload() {
+    public void webclientRequest() {
         String s1, s2;
 
         WebClient webClient = WebClient.create(MY_URL);
@@ -32,7 +32,25 @@ public class WebClientFirstRequestTest {
     }
 
     @Test
-    public void simpleRequest() {
+    public void webclientRequestFromDifferentInstances() {
+        String s1, s2, s3, s4;
+
+        WebClient webClient1 = WebClient.create(MY_URL);
+        WebClient webClient2 = WebClient.create(MY_URL);
+
+        s1 = easy_to_find_method_name_123(webClient1);
+        s2 = easy_to_find_method_name_123(webClient1);
+
+        s3 = easy_to_find_method_name_123(webClient2);
+        s4 = easy_to_find_method_name_123(webClient2);
+
+        System.out.println(s1 + s2 + s3 + s4);
+
+        wireMock.verifyThat(getRequestedFor(urlEqualTo(FOOS_URL)));
+    }
+
+    @Test
+    public void webclientRequestWithPreload() {
         String s1, s2;
 
         preload();
@@ -49,7 +67,7 @@ public class WebClientFirstRequestTest {
     }
 
     @Test
-    public void simpleRequest2() {
+    public void restTemplateRequest() {
         RestTemplate restTemplate = new RestTemplate();
 
         ResponseDefinitionBuilder responseBuilder = aResponse()
