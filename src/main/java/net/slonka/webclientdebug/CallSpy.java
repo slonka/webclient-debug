@@ -1,4 +1,4 @@
-package com.example.demo;
+package net.slonka.webclientdebug;
 
 import javassist.*;
 
@@ -21,11 +21,11 @@ public class CallSpy implements ClassFileTransformer {
         ClassPool cp = ClassPool.getDefault();
         cp.appendClassPath(new LoaderClassPath(Thread.currentThread().getContextClassLoader()));
 
-        cp.importPackage("com.example.demo");
+        cp.importPackage("net.slonka.webclientdebug");
 
         //region filter agent classes
         // we do not want to profile ourselves
-        if (className.startsWith("com/example/demo") && !className.startsWith("com/example/demo/Main")) {
+        if (className.startsWith("net/slonka/webclientdebug") && !className.startsWith("net/slonka/webclientdebug/Main")) {
             return null;
         }
         //endregion
@@ -34,7 +34,7 @@ public class CallSpy implements ClassFileTransformer {
         //region filter out non-application classes
         // Application filter. Can be externalized into a property file.
         // For instance, profilers use blacklist/whitelist to configure this kind of filters
-        if (!className.startsWith("org/springframework/") && !className.startsWith("com/example/demo/Main")) {
+        if (!className.startsWith("org/springframework/") && !className.startsWith("net/slonka/webclientdebug/Main")) {
             return classfileBuffer;
         }
         //endregion

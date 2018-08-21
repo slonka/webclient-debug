@@ -1,4 +1,4 @@
-package com.example.demo;
+package net.slonka.webclientdebug;
 
 import java.lang.instrument.Instrumentation;
 

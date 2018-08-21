@@ -17,8 +17,8 @@ apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-group = "com.zeroturnaround"
-jar.baseName = 'callspy'
+group = "net.slonka"
+jar.baseName = 'webclientdebug'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
@@ -50,9 +50,9 @@ jar {
 
     manifest {
         attributes(
-                'Main-Class': 'com.example.demo.Main',
-                'Premain-Class': 'com.example.demo.Agent',
-                'Agent-Class': 'com.example.demo.Agent',
+                'Main-Class': 'net.slonka.webclientdebug.Main',
+                'Premain-Class': 'net.slonka.webclientdebug.Agent',
+                'Agent-Class': 'net.slonka.webclientdebug.Agent',
                 'Can-Redefine-Classes': 'true',
                 'Can-Retransform-Classes': 'true',
                 'Can-Set-Native-Method-Prefix': 'true',

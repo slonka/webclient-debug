@@ -1,11 +1,10 @@
-package com.example.demo;
+package net.slonka.webclientdebug;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import io.netty.channel.DefaultChannelConfig;
 import io.netty.channel.local.LocalChannel;
-import io.netty.util.concurrent.DefaultEventExecutor;
 import org.springframework.core.ResolvableType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.codec.multipart.MultipartHttpMessageReader;

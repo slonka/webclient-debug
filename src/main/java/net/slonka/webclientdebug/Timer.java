@@ -1,4 +1,4 @@
-package com.example.demo;
+package net.slonka.webclientdebug;
 import java.util.Stack;
 
 @SuppressWarnings("unused")

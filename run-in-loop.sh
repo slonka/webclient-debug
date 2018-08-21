@@ -2,7 +2,7 @@
 
 for i in `seq 1 100`;
 do
-    java -javaagent:build/libs/callspy-0.0.1-SNAPSHOT.jar Main 2>error.txt 1>all_methods_called.txt
+    java -javaagent:build/libs/webclientdebug-0.0.1-SNAPSHOT.jar net.slonka.webclientdebug.Main 2>error.txt 1>all_methods_called.txt
     node split.js all_methods_called.txt $i
 done
 

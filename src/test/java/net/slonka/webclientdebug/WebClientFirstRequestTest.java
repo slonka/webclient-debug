@@ -1,4 +1,4 @@
-package com.example.demo;
+package net.slonka.webclientdebug;
 
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import org.junit.Before;
@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import static com.example.demo.Main.*;
+import static net.slonka.webclientdebug.Main.*;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static io.netty.handler.codec.http.HttpHeaders.Values.APPLICATION_JSON;
 
