@@ -78,4 +78,5 @@ On my machine the times are around `345 ms` and `257 ms`.
 ### Summary
 
 Is there a way to work around this issue?
+
 Should I just perform a request to a mocked server before starting the test suite?
