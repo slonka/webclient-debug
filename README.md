@@ -39,7 +39,7 @@ See `CallSpy` and `Timer`.
 
 That produces an output in which `>` means entering a function. `<` means returning from function.
 That is followed by function name and time it took to run it.
-You can see `first_call.txt` and `second_call.txt` and `diff.html` (this is just a convenience file - you can do your diff manually) to see the differences between first and second `WebClient` call.
+You can see `first_call.txt` and `second_call.txt` and [diff.html](https://htmlpreview.github.io/?https://github.com/slonka/webclient-debug/blob/master/diff.html) (this is just a convenience file - you can do your diff manually) to see the differences between first and second `WebClient` call.
 
 You can find sorted results in a file `function timing - averages (100 samples).tsv`.
 
