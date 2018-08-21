@@ -1,12 +1,19 @@
 ### webclient-debug
 Trying to figure out why first request using WebClient takes so much time.
 
-### Backstory:
+### Backstory
 When we started using webclient in our library and we've noticed that the CI builds failed because of a 500ms timeout.
 We narrowed it down to first WebClient request and started digging what's happening.
 
+### Testing hardware
+
+```
+  os : Darwin / 17.5.0 / x64
+ cpu : Intel(R) Core(TM) i7-7700HQ CPU @ 2.80GHz × 8
+```
+
 ### Running
-If you run [restTemplateRequest()](https://github.com/slonka/webclient-debug/blob/master/src/test/java/com/example/demo/WebClientFirstRequestTest.java#L70) test in `WebClientFirstRequestTest` you will see the output:
+If you run [restTemplateRequest()](https://github.com/slonka/webclient-debug/blob/master/src/test/java/com/example/demo/WebClientFirstRequestTest.java#L70) test in `WebClientFirstRequestTest`. An example output is:
 
 ```
 First took: 46 ms
@@ -20,7 +27,7 @@ This test uses `RestTemplate` to perform the request.
 If you run [webclientRequest()](https://github.com/slonka/webclient-debug/blob/master/src/test/java/com/example/demo/WebClientFirstRequestTest.java#L20) the first request takes `316 ms` and the second `6 ms`.
 
 Creating a new `WebClient` instance doesn't mean that the first request in the new instance will be slow.
-Running [webclientRequestFromDifferentInstances](https://github.com/slonka/webclient-debug/blob/master/src/test/java/com/example/demo/WebClientFirstRequestTest.java#L35) outputs:
+Running [webclientRequestFromDifferentInstances](https://github.com/slonka/webclient-debug/blob/master/src/test/java/com/example/demo/WebClientFirstRequestTest.java#L35) should produce a similar result:
 
 ```
 block(): 319 ms
