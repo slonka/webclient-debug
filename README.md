@@ -5,7 +5,7 @@ Trying to figure out why first request using WebClient takes so much time.
 When we started using webclient in our library and we've noticed that the CI builds failed because of a 500ms timeout.
 We narrowed it down to first WebClient request and started digging what's happening.
 
-### Testing hardware
+### Testing environment
 
 ```
   os : Darwin / 17.5.0 / x64
