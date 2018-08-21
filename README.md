@@ -41,7 +41,7 @@ This means that the time is mainly spent in creating shared state, meaning `stat
 I wanted to profile this code to see which functions take the most time, it's only done on the first call so it cannot be
 run in a loop and profiled with something like [async-profiler](https://github.com/jvm-profiling-tools/async-profiler).
 
-In order to measure call time I wrote a java agent. It instruments all the methods and inserts timing information.
+In order to measure call time I wrote a java agent (based on [callspy](https://github.com/zeroturnaround/callspy)). It instruments all the methods and inserts timing information.
 See [CallSpy](https://github.com/slonka/webclient-debug/blob/master/src/main/java/net/slonka/webclientdebug//CallSpy.java) and [Timer](https://github.com/slonka/webclient-debug/blob/master/src/main/java/net/slonka/webclientdebug//Timer.java).
 
 That produces an output in which `>` means entering a function. `<` means returning from function.
