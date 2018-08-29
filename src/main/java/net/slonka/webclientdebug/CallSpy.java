@@ -25,7 +25,7 @@ public class CallSpy implements ClassFileTransformer {
 
         //region filter agent classes
         // we do not want to profile ourselves
-        if (className.startsWith("net/slonka/webclientdebug") && !className.startsWith("net/slonka/webclientdebug/Main")) {
+        if (className.startsWith("net/slonka/webclientdebug")) {
             return null;
         }
         //endregion
@@ -34,7 +34,8 @@ public class CallSpy implements ClassFileTransformer {
         //region filter out non-application classes
         // Application filter. Can be externalized into a property file.
         // For instance, profilers use blacklist/whitelist to configure this kind of filters
-        if (!className.startsWith("org/springframework/") && !className.startsWith("net/slonka/webclientdebug/Main")) {
+        if (!className.startsWith("org/springframework/") &&
+                !className.startsWith("net/slonka/webclientdebug/Main") && !className.startsWith("reactor/ipc/netty")) {
             return classfileBuffer;
         }
         //endregion
