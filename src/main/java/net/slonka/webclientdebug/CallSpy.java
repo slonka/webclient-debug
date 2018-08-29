@@ -35,7 +35,7 @@ public class CallSpy implements ClassFileTransformer {
         // Application filter. Can be externalized into a property file.
         // For instance, profilers use blacklist/whitelist to configure this kind of filters
         if (!className.startsWith("org/springframework/") &&
-                !className.startsWith("net/slonka/webclientdebug/Main") && !className.startsWith("reactor/ipc/netty")) {
+                !className.startsWith("net/slonka/webclientdebug/Main") && !className.startsWith("reactor/netty/http")) {
             return classfileBuffer;
         }
         //endregion

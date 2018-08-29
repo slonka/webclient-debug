@@ -3,6 +3,8 @@ package net.slonka.webclientdebug;
 import com.github.tomakehurst.wiremock.client.ResponseDefinitionBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.client.Netty4ClientHttpRequestFactory;
+import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -69,6 +71,34 @@ public class WebClientFirstRequestTest {
     @Test
     public void restTemplateRequest() {
         RestTemplate restTemplate = new RestTemplate();
+
+        ResponseDefinitionBuilder responseBuilder = aResponse()
+                .withStatus(200)
+                .withBody("[]")
+                .withHeader(CONTENT_TYPE, APPLICATION_JSON);
+
+        wireMock.register(get(FOOS_URL).willReturn(responseBuilder));
+
+        long start1 = System.nanoTime();
+        String body = restTemplate.getForEntity(MY_URL, String.class).getBody();
+        long end1 = System.nanoTime();
+
+        long start2 = System.nanoTime();
+        String body2 = restTemplate.getForEntity(MY_URL, String.class).getBody();
+        long end2 = System.nanoTime();
+
+        System.out.println(body + body2);
+
+        System.out.println(String.format("First took: %s ms", ((end1 - start1) / 1_000_000)));
+        System.out.println(String.format("Second took: %s ms", ((end2 - start2) / 1_000_000)));
+        System.out.println(String.format("Difference in time: %s ms", ((end1 - start1) - (end2 - start2)) / 1_000_000));
+
+        wireMock.verifyThat(getRequestedFor(urlEqualTo(FOOS_URL)));
+    }
+
+    @Test
+    public void restTemplateRequestWithNettyFactory() {
+        RestTemplate restTemplate = new RestTemplate(new Netty4ClientHttpRequestFactory());
 
         ResponseDefinitionBuilder responseBuilder = aResponse()
                 .withStatus(200)

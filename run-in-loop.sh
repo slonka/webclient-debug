@@ -6,6 +6,8 @@ do
     node split.js all_methods_called.txt $i
     perl -n -e'/\s+<.*- took (\d+\.\d+) ms.*/ && print $1 . "\n"' < output/first_call_$i.txt > output/first_call_stripped_$i.txt
     perl -n -e'/\s+<.*- took (\d+\.\d+) ms.*/ && print $1 . "\n"' < output/second_call_$i.txt > output/second_call_stripped_$i.txt
+
+    echo "done $i"
 done
 
 node stats.js first_call_stripped > stats_first_call.txt
